@@ -3,6 +3,8 @@ title: "Analysis - Option3"
 author: "JM"
 format: html
 editor: visual
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## 
