@@ -1,0 +1,41 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+jupyter: python3
+editor_options: 
+  chunk_output_type: console
+---
+
+```{python}
+import pandas as pd
+import numpy as np
+```
+
+## US Census Data
+
+```{python}
+df = pd.read_csv("C:/Users/MJ/Downloads/census.csv")
+df = df[df['SUMLEV'] == 50]
+df.head()
+```
+
+## Spliting Data
+
+```{python}
+%%timeit -n 3
+
+for state in df['STNAME'].unique():
+  avg = np.average(df.where(df['STNAME']==state).dropna()['CENSUS2010POP'])
+  print('Counties in state ' + state + ' have an average population of ' + str(avg))
+```
+
+## GROUPBY
+
+```{python}
+%%timeit -n 3
+
+for group, frame in df.groupby('STNAME'):
+  avg = np.average(frame['CENSUS2010POP'])
+  print('Counties in state ' + group + ' have an average population of ' + str(avg))
+```

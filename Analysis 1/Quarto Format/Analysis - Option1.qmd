@@ -1,0 +1,213 @@
+---
+title: "Analysis - Option1"
+format: html
+editor: visual
+---
+
+## Data
+
+```{r}
+bo_df <- read.csv(file.choose())
+str(bo_df)
+```
+
+```{r}
+factor_cols <- c("Location", "Rep","Population.Density","Plot.No.","Hybrid" )
+bo_df[factor_cols] <- lapply(bo_df[factor_cols], as.factor)
+str(bo_df)
+```
+
+## Analysis
+
+```{r}
+library(agricolae)
+```
+
+### 1. 1000GWT
+
+```{r}
+plant1000GWT_df <- as.data.frame(tapply(bo_df$X1000GWT, list(bo_df$Hybrid, bo_df$Population.Density), mean, na.rm = TRUE))
+plant1000GWT_df
+```
+
+```{r}
+model_1 <- aov(X1000GWT ~ Rep + Population.Density + Location*Hybrid , data = bo_df)
+summary(model_1)
+```
+
+```{r}
+LSD_1 <- LSD.test(model_1, "Population.Density")
+LSD_1
+```
+
+```{r}
+TukeyHSD(model_1)
+```
+
+### 2. Plant Height
+
+```{r}
+plantheight_df <- as.data.frame(tapply(bo_df$Plant.Ht, list(bo_df$Hybrid, bo_df$Population.Density), mean))
+plantheight_df
+```
+
+```{r}
+model_2 <- aov(Plant.Ht ~ Rep + Population.Density + Location*Hybrid , data = bo_df)
+summary(model_2)
+```
+
+```{r}
+LSD_2 <- LSD.test(model_2, "Population.Density")
+LSD_2
+```
+
+```{r}
+TukeyHSD(model_2)
+```
+
+### 3. N.Ears
+
+```{r}
+plantNears_df <- as.data.frame(tapply(bo_df$N.Ears, list(bo_df$Hybrid, bo_df$Population.Density), mean))
+plantNears_df
+```
+
+```{r}
+model_3 <- aov(N.Ears ~ Rep + Population.Density + Location*Hybrid , data = bo_df)
+summary(model_3)
+```
+
+```{r}
+LSD_3 <- LSD.test(model_3, "Population.Density")
+LSD_3
+```
+
+```{r}
+TukeyHSD(model_3)
+```
+
+### 4. AD
+
+```{r}
+plantAD_df <- as.data.frame(tapply(bo_df$AD, list(bo_df$Hybrid, bo_df$Population.Density), mean, na.rm = TRUE))
+plantAD_df
+```
+
+```{r}
+model_4 <- aov(AD ~ Rep + Population.Density + Location*Hybrid , data = bo_df)
+summary(model_4)
+```
+
+```{r}
+LSD_4 <- LSD.test(model_4, "Population.Density")
+LSD_4
+```
+
+```{r}
+TukeyHSD(model_4)
+```
+
+### 5. SD
+
+```{r}
+plantSD_df <- as.data.frame(tapply(bo_df$SD, list(bo_df$Hybrid, bo_df$Population.Density), mean, na.rm = TRUE))
+plantSD_df
+```
+
+```{r}
+model_5 <- aov(AD ~ Rep + Population.Density + Location*Hybrid , data = bo_df)
+summary(model_5)
+```
+
+```{r}
+LSD_5 <- LSD.test(model_5, "Population.Density")
+LSD_5
+```
+
+```{r}
+TukeyHSD(model_5)
+```
+
+### 6. ASI
+
+```{r}
+plantASI_df <- as.data.frame(tapply(bo_df$ASI, list(bo_df$Hybrid, bo_df$Population.Density), mean, na.rm = TRUE))
+plantASI_df
+```
+
+```{r}
+model_6 <- aov(ASI ~ Rep + Population.Density + Location*Hybrid , data = bo_df)
+summary(model_6)
+```
+
+```{r}
+LSD_6 <- LSD.test(model_6, "Population.Density")
+LSD_6
+```
+
+```{r}
+TukeyHSD(model_6)
+```
+
+### 7. RL
+
+```{r}
+plantRL_df <- as.data.frame(tapply(bo_df$RL, list(bo_df$Hybrid, bo_df$Population.Density), mean, na.rm = TRUE))
+plantRL_df
+```
+
+```{r}
+model_7 <- aov(RL ~ Rep + Population.Density + Location*Hybrid , data = bo_df)
+summary(model_7)
+```
+
+```{r}
+LSD_7 <- LSD.test(model_7, "Population.Density")
+LSD_7
+```
+
+```{r}
+TukeyHSD(model_7)
+```
+
+### 8. SL
+
+```{r}
+plantSL_df <- as.data.frame(tapply(bo_df$SL, list(bo_df$Hybrid, bo_df$Population.Density), mean, na.rm = TRUE))
+plantSL_df
+```
+
+```{r}
+model_8 <- aov(SL ~ Rep + Population.Density + Location*Hybrid , data = bo_df)
+summary(model_8)
+```
+
+```{r}
+LSD_8 <- LSD.test(model_8, "Population.Density")
+LSD_8
+```
+
+```{r}
+TukeyHSD(model_8)
+```
+
+### 9. GY
+
+```{r}
+plantGY_df <- as.data.frame(tapply(bo_df$GY, list(bo_df$Hybrid, bo_df$Population.Density), mean, na.rm = TRUE))
+plantGY_df
+```
+
+```{r}
+model_9 <- aov(GY ~ Rep + Population.Density + Location*Hybrid , data = bo_df)
+summary(model_9)
+```
+
+```{r}
+LSD_9 <- LSD.test(model_9, "Population.Density")
+LSD_9
+```
+
+```{r}
+TukeyHSD(model_9)
+```

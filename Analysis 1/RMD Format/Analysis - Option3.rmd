@@ -1,0 +1,544 @@
+---
+title: "Analysis - Option3"
+output:
+  word_document: default
+  html_notebook: default
+  pdf_document: default
+---
+
+
+## Data
+
+```{r}
+df <- read.csv(file.choose(), header = TRUE, stringsAsFactors = TRUE)
+str(df)
+
+```
+
+```{r}
+library(tidyverse)
+library(dplyr)
+df$Hybrid <- str_c("Genotype_",df$Hybrid)
+factor_cols <- c("Location", "Rep","Population.Density","Plot.No.","Hybrid" )
+df[factor_cols] <- lapply(df[factor_cols], as.factor)
+head(df)
+```
+
+# Part One Analysis - Spacing
+
+```{r}
+df_spacing <- split(df, f = df$Population.Density)
+```
+
+## Spacing \`60 \* 20\`
+
+```{r}
+df6020 <- df_spacing$`60 * 20`
+dfsp6020 <- subset(df6020, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors6020 <- list(df6020$Hybrid)
+
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp6020)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp6020[[col]], mean_factors6020, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp6020[[col]] ~ Rep + Hybrid + Location*Hybrid , data = df6020)
+  lsd_col <- LSD.test(anova_col, "Hybrid")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+## Spacing \`75 \* 20\`
+
+```{r}
+df7520 <- df_spacing$`75 * 20`
+dfsp7520 <- subset(df7520, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors7520 <- list(df7520$Hybrid)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp7520)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp7520[[col]], mean_factors7520, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp7520[[col]] ~ Rep + Hybrid + Location*Hybrid , data = df7520)
+  lsd_col <- LSD.test(anova_col, "Hybrid")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+## Spacing \`75 \* 25\`
+
+```{r}
+df7525 <- df_spacing$`75 * 25`
+dfsp7525 <- subset(df7525, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors7525 <- list(df7525$Hybrid)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp7525)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp7525[[col]], mean_factors7525, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp7525[[col]] ~ Rep + Hybrid + Location*Hybrid , data = df7525)
+  lsd_col <- LSD.test(anova_col, "Hybrid")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+## Spacing \`75 \* 30\`
+
+```{r}
+df7530 <- df_spacing$`75 * 30`
+dfsp7530 <- subset(df7530, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors7530 <- list(df7530$Hybrid)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp7530)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp7530[[col]], mean_factors7530, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp7530[[col]] ~ Rep + Hybrid + Location*Hybrid , data = df7530)
+  lsd_col <- LSD.test(anova_col, "Hybrid")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+# Part two Analysis - Hybrid
+
+```{r}
+df_genotype <- split(df, f = df$Hybrid)
+```
+
+## Genotype1
+
+```{r}
+dfGenotype_1 <- df_genotype$`Genotype 1`
+dfsp_Genotype_1 <- subset(dfGenotype_1, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_1 <- list(dfGenotype_1$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_1)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_1[[col]], mean_factors_Genotype_1, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_1[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_1 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+## Genotype2
+
+```{r}
+dfGenotype_2 <- df_genotype$`Genotype 2`
+dfsp_Genotype_2 <- subset(dfGenotype_2, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_2 <- list(dfGenotype_2$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_2)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_2[[col]], mean_factors_Genotype_2, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_2[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_2 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+## Genotype 3
+
+```{r}
+dfGenotype_3 <- df_genotype$`Genotype 3`
+dfsp_Genotype_3 <- subset(dfGenotype_3, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_3 <- list(dfGenotype_3$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_3)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_3[[col]], mean_factors_Genotype_3, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_3[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_3 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+## Genotype 4
+
+```{r}
+dfGenotype_4 <- df_genotype$`Genotype 4`
+dfsp_Genotype_4 <- subset(dfGenotype_4, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_4 <- list(dfGenotype_4$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_4)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_4[[col]], mean_factors_Genotype_4, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_4[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_4 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+## Genotype 5
+
+```{r}
+dfGenotype_5 <- df_genotype$`Genotype 5`
+dfsp_Genotype_5 <- subset(dfGenotype_5, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_5 <- list(dfGenotype_5$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_5)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_5[[col]], mean_factors_Genotype_5, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_5[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_5 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+## Genotype 6
+
+```{r}
+dfGenotype_6 <- df_genotype$`Genotype 6`
+dfsp_Genotype_6 <- subset(dfGenotype_6, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_6 <- list(dfGenotype_6$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_6)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_6[[col]], mean_factors_Genotype_6, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_6[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_6 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+## Genotype 7
+
+```{r}
+dfGenotype_7 <- df_genotype$`Genotype 7`
+dfsp_Genotype_7 <- subset(dfGenotype_7, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_7 <- list(dfGenotype_7$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_7)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_7[[col]], mean_factors_Genotype_7, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_7[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_7 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+## Genotype 8
+
+```{r}
+dfGenotype_8 <- df_genotype$`Genotype 8`
+dfsp_Genotype_8 <- subset(dfGenotype_8, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_8 <- list(dfGenotype_8$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_8)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_8[[col]], mean_factors_Genotype_8, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_8[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_8 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  print(mean_col)
+  print(shapiro.test(dfsp6020[[col]]))
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(TukeyHSD(anova_col))
+}
+```
+
+## Genotype 9
+
+```{r}
+dfGenotype_9 <- df_genotype$`Genotype 9`
+dfsp_Genotype_9 <- subset(dfGenotype_9, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_9 <- list(dfGenotype_9$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_9)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_9[[col]], mean_factors_Genotype_9, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_9[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_9 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  tuk_col <- TukeyHSD(anova_col)
+  print(mean_col)
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(tuk_col)
+}
+```
+
+## Genotype 10
+
+```{r}
+dfGenotype_10 <- df_genotype$`Genotype 10`
+dfsp_Genotype_10 <- subset(dfGenotype_10, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_10 <- list(dfGenotype_10$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_10)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_10[[col]], mean_factors_Genotype_10, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_10[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_10 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  tuk_col <- TukeyHSD(anova_col)
+  print(mean_col)
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(tuk_col)
+}
+```
+
+## Genotype 11
+
+```{r}
+dfGenotype_11 <- df_genotype$`Genotype 11`
+dfsp_Genotype_11 <- subset(dfGenotype_11, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_11 <- list(dfGenotype_11$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_11)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_11[[col]], mean_factors_Genotype_11, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_11[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_11 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  tuk_col <- TukeyHSD(anova_col)
+  print(mean_col)
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(tuk_col)
+}
+```
+
+## Genotype 12
+
+```{r}
+dfGenotype_12 <- df_genotype$`Genotype 12`
+dfsp_Genotype_12 <- subset(dfGenotype_12, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_12 <- list(dfGenotype_12$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_12)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_12[[col]], mean_factors_Genotype_12, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_12[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_12 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  tuk_col <- TukeyHSD(anova_col)
+  print(mean_col)
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(tuk_col)
+}
+```
+
+## Genotype 13
+
+```{r}
+dfGenotype_13 <- df_genotype$`Genotype 13`
+dfsp_Genotype_13 <- subset(dfGenotype_13, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_13 <- list(dfGenotype_13$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_13)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_13[[col]], mean_factors_Genotype_13, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_13[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_13 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  tuk_col <- TukeyHSD(anova_col)
+  print(mean_col)
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(tuk_col)
+}
+```
+
+## Genotype 14
+
+```{r}
+dfGenotype_14 <- df_genotype$`Genotype 14`
+dfsp_Genotype_14 <- subset(dfGenotype_14, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_14 <- list(dfGenotype_14$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_14)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_14[[col]], mean_factors_Genotype_14, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_14[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_14 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  tuk_col <- TukeyHSD(anova_col)
+  print(mean_col)
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(tuk_col)
+}
+```
+
+## Genotype 15
+
+```{r}
+dfGenotype_15 <- df_genotype$`Genotype 15`
+dfsp_Genotype_15 <- subset(dfGenotype_15, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_15 <- list(dfGenotype_15$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_15)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_15[[col]], mean_factors_Genotype_15, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_15[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_15 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  tuk_col <- TukeyHSD(anova_col)
+  print(mean_col)
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(tuk_col)
+}
+```
+
+## Genotype 16
+
+```{r}
+dfGenotype_16 <- df_genotype$`Genotype 16`
+dfsp_Genotype_16 <- subset(dfGenotype_16, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_16 <- list(dfGenotype_16$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_16)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_16[[col]], mean_factors_Genotype_16, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_16[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_16 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  tuk_col <- TukeyHSD(anova_col)
+  print(mean_col)
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(tuk_col)
+}
+```
+
+## Genotype 17
+
+```{r}
+dfGenotype_17 <- df_genotype$`Genotype 17`
+dfsp_Genotype_17 <- subset(dfGenotype_17, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_17 <- list(dfGenotype_17$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_17)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_17[[col]], mean_factors_Genotype_17, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_17[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_17 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  tuk_col <- TukeyHSD(anova_col)
+  print(mean_col)
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(tuk_col)
+}
+```
+
+## Genotype 18
+
+```{r}
+dfGenotype_18 <- df_genotype$`Genotype 18`
+dfsp_Genotype_18 <- subset(dfGenotype_18, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors_Genotype_18 <- list(dfGenotype_18$Population.Density)
+```
+
+```{r}
+library(agricolae)
+for (col in names(dfsp_Genotype_18)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(dfsp_Genotype_18[[col]], mean_factors_Genotype_18, mean, na.rm = TRUE))
+  anova_col <- aov(dfsp_Genotype_18[[col]] ~ Rep + Population.Density + Location*Population.Density , data = dfGenotype_18 )
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  tuk_col <- TukeyHSD(anova_col)
+  print(mean_col)
+  print(summary.aov(anova_col))
+  print(lsd_col)
+  print(tuk_col)
+}
+```

@@ -1,0 +1,30 @@
+---
+title: "Analysis - Option2"
+author: "JM"
+format: html
+editor: visual
+---
+
+## Data
+
+```{r}
+bo_df <- read.csv(file.choose())
+df <- subset(bo_df, select=c(AD, SD, ASI, Plant.Ht, RL, SL, GY, N.Ears, R.Cob, K.Row,X1000GWT))
+mean_factors <- list(bo_df$Hybrid, bo_df$Population.Density)
+```
+
+## Analysis
+
+```{r}
+library(agricolae)
+for (col in names(df)) {
+  cat("\nAnalysis for column", col,"\n")
+  mean_col <- as.data.frame(tapply(df[[col]], mean_factors, mean, na.rm = TRUE))
+  anova_col <- aov(df[[col]] ~ Rep + Population.Density + Location*Hybrid , data = bo_df)
+  lsd_col <- LSD.test(anova_col, "Population.Density")
+  lsd_col <- LSD.test(anova_col, "Hybrid")
+  print(mean_col)
+  print(summary.aov(anova_col))
+  print(lsd_col)
+}
+```
